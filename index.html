@@ -90,7 +90,7 @@
   .hero-badge { background: rgba(232,160,160,0.18); border: 1px solid rgba(232,160,160,0.4); backdrop-filter: blur(12px); border-radius: 12px; padding: 1rem 1.4rem; color: #fff; text-align: center; }
   .hero-badge .num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 400; display: block; color: var(--blush-light); line-height: 1; }
   .hero-badge .label { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.75; margin-top: 0.3rem; display: block; }
-  .hero-stat-strip { position: absolute; bottom: 0; left: 0; right: 0; background: var(--charcoal); padding: 1rem 5rem; display: flex; gap: 3rem; align-items: center; z-index: 3; }
+  .hero-stat-strip { position: absolute; bottom: 0; left: 0; right: 0; background: var(--charcoal); padding: 1rem 5rem; display: flex; gap: 3rem; align-items: center; z-index: 3; justify-content: center; }
   .stat { display: flex; align-items: baseline; gap: 0.5rem; }
   .stat-num { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--blush-light); font-weight: 400; }
   .stat-label { font-size: 0.65rem; color: rgba(255,255,255,0.5); letter-spacing: 0.12em; text-transform: uppercase; }
@@ -305,6 +305,14 @@
   .footer-social { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); text-decoration: none; transition: all 0.25s; }
   .footer-social:hover { border-color: var(--blush); color: var(--blush-light); }
 
+  /* ── LIGHTBOX ── */
+  .lightbox-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:1000; align-items:center; justify-content:center; cursor:zoom-out; }
+  .lightbox-overlay.open { display:flex; }
+  .lightbox-overlay img { max-width:90vw; max-height:90vh; border-radius:12px; object-fit:contain; box-shadow:0 30px 80px rgba(0,0,0,0.5); }
+  .lightbox-close { position:absolute; top:1.5rem; right:1.5rem; color:#fff; font-size:1.8rem; cursor:pointer; background:rgba(255,255,255,0.1); border:none; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:background 0.2s; }
+  .lightbox-close:hover { background:rgba(255,255,255,0.25); }
+  .gallery-item { cursor:zoom-in; }
+
   /* ── ANIMATIONS ── */
   .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .fade-up.visible { opacity: 1; transform: none; }
@@ -327,9 +335,10 @@
   @media (max-width: 1100px) {
     .services-grid { grid-template-columns: repeat(2, 1fr); }
   }
+
   @media (max-width: 1024px) {
     #hero { grid-template-columns: 1fr; }
-    .hero-left { padding: 7rem 2.5rem 3rem; min-height: 80svh; }
+    .hero-left { padding: 7rem 2.5rem 3rem; min-height: 70svh; }
     .hero-right { height: 60svh; }
     .hero-stat-strip { padding: 1rem 2.5rem; gap: 1.5rem; flex-wrap: wrap; }
     #combo { padding: 2rem 2.5rem; }
@@ -350,17 +359,94 @@
     .nav-links, .nav-cta { display: none; }
     .hamburger { display: flex; }
   }
+
   @media (max-width: 640px) {
-    .pkg-grid { grid-template-columns: 1fr; }
-    .services-grid { grid-template-columns: 1fr; }
-    .gallery-grid { grid-template-columns: 1fr 1fr; }
-    .reel-card { flex: 0 0 calc(80% - 0.6rem); }
-    .testi-card { flex: 0 0 90%; }
-    .form-row { grid-template-columns: 1fr; }
-    #packages::before { display: none; }
-    .combo-inner { flex-direction: column; align-items: flex-start; }
-    .hero-stat-strip { gap: 1rem; padding: 1rem 1.5rem; }
+    /* Sections padding */
+    #combo { padding: 1.8rem 1.5rem; }
+    #packages { padding: 4rem 1.5rem; }
+    #services { padding: 4rem 1.5rem; }
+    #about { padding: 4rem 1.5rem; gap: 2.5rem; }
+    #lookbook { padding: 4rem 1.5rem; }
+    #reels { padding: 4rem 1.5rem; }
+    #testimonials { padding: 4rem 1.5rem; }
+    #booking { padding: 4rem 1.5rem; }
+
+    /* Hero */
+    .hero-left { padding: 5.5rem 1.5rem 2rem; min-height: unset; }
+    .hero-right { height: 52svh; }
+    .hero-h1 { font-size: clamp(2.2rem, 9vw, 3rem); }
+    .hero-sub { font-size: 0.9rem; margin-bottom: 1.2rem; }
+    .hero-skin-tags { gap: 0.4rem !important; margin-bottom: 1.4rem !important; margin-top: -0.8rem !important; }
+    .hero-skin-tags span { font-size: 0.6rem !important; padding: 0.3rem 0.7rem !important; letter-spacing: 0.1em !important; }
+    .hero-actions { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+    .btn-primary { width: 100%; justify-content: center; }
+
+    /* Stat strip — sit below image on mobile */
+    .hero-stat-strip { position: relative; bottom: auto; left: auto; right: auto; gap: 0.8rem; padding: 0.8rem 1.5rem; justify-content: space-around; }
     .stat-label { display: none; }
+    .stat-num { font-size: 1.3rem; }
+    .stat-divider { display: none; }
+
+    /* Combo */
+    .combo-inner { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
+    .combo-text h3 { font-size: 1.3rem; }
+    .btn-combo { width: 100%; justify-content: center; }
+
+    /* Packages */
+    .pkg-grid { grid-template-columns: 1fr; }
+    #packages::before { display: none; }
+    .pkg-price { font-size: 0.88rem !important; line-height: 1.5; }
+    .pkg-card { padding: 2rem 1.5rem; }
+
+    /* Services */
+    .services-grid { grid-template-columns: 1fr; }
+    .travel-note { flex-direction: column; gap: 0.8rem; padding: 1.2rem 1.5rem; }
+
+    /* About */
+    .skills-grid { grid-template-columns: 1fr; }
+    .about-accent-card { right: 0.5rem; bottom: -0.5rem; width: 130px; padding: 1rem; }
+    .about-accent-card .num { font-size: 2rem; }
+    .about-bio { font-size: 0.93rem; }
+
+    /* Lookbook */
+    .lookbook-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .filter-tabs { gap: 0.35rem; }
+    .filter-tab { padding: 0.4rem 0.85rem; font-size: 0.63rem; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+    .gallery-item.tall { grid-row: span 1; aspect-ratio: 3/4; }
+
+    /* Reels */
+    .reel-card { flex: 0 0 82%; }
+    .reels-header { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+
+    /* Testimonials */
+    .testi-card { flex: 0 0 92%; }
+    .testi-quote { font-size: 1rem; }
+
+    /* Booking */
+    .form-row { grid-template-columns: 1fr; }
+    .booking-form-card { padding: 1.5rem 1.2rem; }
+    .form-title { font-size: 1.35rem; }
+    .booking-desc { font-size: 0.9rem; }
+
+    /* Footer */
+    footer { flex-direction: column; align-items: center; text-align: center; gap: 1rem; padding: 2rem 1.5rem; }
+
+    /* Toast */
+    .toast { white-space: normal; text-align: center; max-width: 88vw; font-size: 0.75rem; }
+
+    /* Section titles */
+    .section-title { font-size: clamp(1.7rem, 7vw, 2.6rem); }
+  }
+
+  /* Very small phones (iPhone SE etc.) */
+  @media (max-width: 390px) {
+    .nav-logo { font-size: 1.15rem; }
+    .hero-h1 { font-size: 2rem; }
+    .hero-skin-tags span { font-size: 0.55rem !important; padding: 0.28rem 0.6rem !important; }
+    .stat-num { font-size: 1.15rem; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+    .pkg-card { padding: 1.6rem 1.2rem; }
   }
 </style>
 </head>
@@ -405,6 +491,12 @@
       Flawless, skin-finish makeovers for the modern bride & every beautiful occasion. 
       Based in Madurai & Coimbatore — traveling worldwide.
     </p>
+    <div class="hero-skin-tags fade-up delay-3" style="display:flex; flex-wrap:wrap; gap:0.6rem; margin-bottom:2rem; margin-top:-1.5rem;">
+      <span style="font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; padding:0.4rem 1rem; border:1px solid var(--border); border-radius:50px; color:var(--rose-deep); background:var(--blush-pale);">✦ Skin Analysis Expert</span>
+      <span style="font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; padding:0.4rem 1rem; border:1px solid var(--border); border-radius:50px; color:var(--rose-deep); background:var(--blush-pale);">✦ Glass Skin Finish</span>
+      <span style="font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; padding:0.4rem 1rem; border:1px solid var(--border); border-radius:50px; color:var(--rose-deep); background:var(--blush-pale);">✦ Tone-Perfect Blending</span>
+      <span style="font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; padding:0.4rem 1rem; border:1px solid var(--border); border-radius:50px; color:var(--rose-deep); background:var(--blush-pale);">✦ Your Skin, Elevated</span>
+    </div>
     <div class="hero-actions fade-up delay-3">
       <a href="#booking" class="btn-primary">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -427,10 +519,6 @@
       </div>
     </div>
     <div class="hero-overlay">
-      <div class="hero-badge">
-        <span class="num">5+</span>
-        <span class="label">Years of Artistry</span>
-      </div>
     </div>
   </div>
   <div class="hero-stat-strip">
@@ -473,7 +561,7 @@
       <span class="pkg-badge">Basic HD</span>
       <span class="pkg-icon">🌸</span>
       <div class="pkg-name">HD Makeup</div>
-      <div class="pkg-price"><sup>₹</sup>15,000</div>
+      <div class="pkg-price" style="font-size:1.1rem; color:var(--blush-light); margin-bottom:1.2rem; font-family:'DM Sans',sans-serif; letter-spacing:0.04em;">Share your details — pricing shared personally 🌸</div>
       <p class="pkg-subtitle">Premium high-end brands that care for your skin while delivering a flawless finish.</p>
       <ul class="pkg-features">
         <li><span class="check">✦</span> Premium High-End Brand Products</li>
@@ -483,14 +571,14 @@
         <li><span class="check">✦</span> Touchup Kit Provided</li>
       </ul>
       <p class="pkg-duration">⏱ Makeup stays 5–6 hours</p>
-      <a href="https://api.whatsapp.com/send/?phone=%2B916374110725&text=Hi%20Saritha!%20I%27m%20interested%20in%20the%20Basic%20HD%20Package%20(%E2%82%B915%2C000).%20Could%20you%20share%20more%20details%3F%20%F0%9F%8C%B8&type=phone_number&app_absent=0" target="_blank" class="btn-pkg btn-pkg-outline">Enquire Now</a>
+      <a href="https://api.whatsapp.com/send/?phone=%2B916374110725&text=Hi%20Saritha!%20I%27m%20interested%20in%20the%20Basic%20HD%20Package.%20Could%20you%20share%20more%20details%3F%20%F0%9F%8C%B8&type=phone_number&app_absent=0" target="_blank" class="btn-pkg btn-pkg-outline">Enquire Now</a>
     </div>
 
     <div class="pkg-card featured fade-up delay-2">
       <span class="pkg-badge pop">✨ Most Loved</span>
       <span class="pkg-icon">👑</span>
       <div class="pkg-name">Luxury HD</div>
-      <div class="pkg-price"><sup>₹</sup>20,000</div>
+      <div class="pkg-price" style="font-size:1.1rem; color:var(--blush-light); margin-bottom:1.2rem; font-family:'DM Sans',sans-serif; letter-spacing:0.04em;">Share your details — pricing shared personally 🌸</div>
       <p class="pkg-subtitle">International prestige brands — Estée Lauder, Charlotte Tilbury, MAC, Too Faced, Smashbox.</p>
       <ul class="pkg-features">
         <li><span class="check">✦</span> International Brand Products Only</li>
@@ -500,24 +588,24 @@
         <li><span class="check">✦</span> Touchup Kit — Relax All Day Long</li>
       </ul>
       <p class="pkg-duration">⏱ Makeup stays 8 hours</p>
-      <a href="https://api.whatsapp.com/send/?phone=%2B916374110725&text=Hi%20Saritha!%20I%27m%20interested%20in%20the%20Luxury%20HD%20Package%20(%E2%82%B920%2C000).%20Could%20you%20share%20more%20details%3F%20%F0%9F%8C%B8&type=phone_number&app_absent=0" target="_blank" class="btn-pkg btn-pkg-rose">Book This Package</a>
+      <a href="https://api.whatsapp.com/send/?phone=%2B916374110725&text=Hi%20Saritha!%20I%27m%20interested%20in%20the%20Luxury%20HD%20Package.%20Could%20you%20share%20more%20details%3F%20%F0%9F%8C%B8&type=phone_number&app_absent=0" target="_blank" class="btn-pkg btn-pkg-rose">Book This Package</a>
     </div>
 
     <div class="pkg-card fade-up delay-3">
       <span class="pkg-badge">Signature</span>
       <span class="pkg-icon">💎</span>
       <div class="pkg-name">Luxury Airbrush</div>
-      <div class="pkg-price"><sup>₹</sup>25,000</div>
+      <div class="pkg-price" style="font-size:1.1rem; color:var(--blush-light); margin-bottom:1.2rem; font-family:'DM Sans',sans-serif; letter-spacing:0.04em;">Share your details — pricing shared personally 🌸</div>
       <p class="pkg-subtitle">The ultimate bridal experience with Temptu Airbrush Gun — flawless coverage that photographs beautifully.</p>
       <ul class="pkg-features">
         <li><span class="check">✦</span> International Brand Products Only</li>
-        <li><span class="check">✦</span> Temptu Airbrush Gun Technology</li>
+        <li><span class="check">✦</span> Applied Hands-On by Saritha — Airbrush Gun Artistry</li>
         <li><span class="check">✦</span> Makeup + Hairstyling + Saree Draping</li>
         <li><span class="check">✦</span> All Complimentaries Included</li>
         <li><span class="check">✦</span> Touchup Kit Included</li>
       </ul>
       <p class="pkg-duration">⏱ Makeup stays all day long</p>
-      <a href="https://api.whatsapp.com/send/?phone=%2B916374110725&text=Hi%20Saritha!%20I%27m%20interested%20in%20the%20Luxury%20Airbrush%20Package%20(%E2%82%B925%2C000).%20Could%20you%20share%20more%20details%3F%20%F0%9F%8C%B8&type=phone_number&app_absent=0" target="_blank" class="btn-pkg btn-pkg-outline">Enquire Now</a>
+      <a href="https://api.whatsapp.com/send/?phone=%2B916374110725&text=Hi%20Saritha!%20I%27m%20interested%20in%20the%20Luxury%20Airbrush%20Package.%20Could%20you%20share%20more%20details%3F%20%F0%9F%8C%B8&type=phone_number&app_absent=0" target="_blank" class="btn-pkg btn-pkg-outline">Enquire Now</a>
     </div>
 
   </div>
@@ -642,92 +730,90 @@
   </div>
   <div class="gallery-grid fade-up delay-2" id="galleryGrid">
 
-    <!-- All images use GitHub raw URLs -->
+    <!-- Row 1 -->
     <div class="gallery-item tall" data-cat="bridal">
-      <img 
-        src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/MAD01065.jpg" 
-        alt="Muhurtham Bridal Look 1"
-        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
-      />
+      <img src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/MAD01065.jpg" alt="Muhurtham Bridal Look 1" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
       <div class="gallery-placeholder" style="display:none">🌸<br/>Bridal Look</div>
       <div class="gallery-overlay"><span class="gallery-label">Muhurtham Bridal</span></div>
     </div>
 
     <div class="gallery-item" data-cat="bridal">
-      <img 
-        src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/MAD01078.jpg" 
-        alt="Muhurtham Bridal Look 2"
-        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
-      />
+      <img src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/MAD01078.jpg" alt="Muhurtham Bridal Look 2" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
       <div class="gallery-placeholder" style="display:none">👑<br/>Bridal Look</div>
       <div class="gallery-overlay"><span class="gallery-label">Muhurtham Bridal</span></div>
     </div>
 
     <div class="gallery-item" data-cat="glam">
-      <img 
-        src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/MAD01128.jpg" 
-        alt="Soft Glam Look"
-        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
-      />
+      <img src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/MAD01128.jpg" alt="Soft Glam Look" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
       <div class="gallery-placeholder" style="display:none">✨<br/>Soft Glam</div>
       <div class="gallery-overlay"><span class="gallery-label">Soft Matte Glam</span></div>
     </div>
 
     <div class="gallery-item" data-cat="bridal">
-      <img 
-        src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/MAD01164.jpg" 
-        alt="Bridal Look 3"
-        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
-      />
+      <img src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/MAD01164.jpg" alt="Bridal Look 3" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
       <div class="gallery-placeholder" style="display:none">💫<br/>Bridal Look</div>
       <div class="gallery-overlay"><span class="gallery-label">Muhurtham Bridal</span></div>
     </div>
 
-    <!-- WhatsApp images from GitHub -->
-    <div class="gallery-item" data-cat="creative">
-      <img 
-        src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/WhatsApp%20Image%202026-05-13%20at%207.26.08%20PM%20(1).jpeg" 
-        alt="Creative Look"
-        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
-      />
-      <div class="gallery-placeholder" style="display:none">💎<br/>Creative Look</div>
-      <div class="gallery-overlay"><span class="gallery-label">Creative Looks</span></div>
+    <!-- Row 2 — new uploads -->
+    <div class="gallery-item" data-cat="bridal">
+      <img src="https://raw.githubusercontent.com/Harippriyasiva/saritha-makeup-artist/main/saritha_makeupartistry/WhatsApp%20Image%202026-05-20%20at%2011.18.03%20PM%20(1).jpeg" alt="Bridal Look" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+      <div class="gallery-placeholder" style="display:none">🌸<br/>Bridal Look</div>
+      <div class="gallery-overlay"><span class="gallery-label">Muhurtham Bridal</span></div>
     </div>
 
     <div class="gallery-item tall" data-cat="glam">
-      <img 
-        src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/WhatsApp%20Image%202026-05-13%20at%207.26.08%20PM.jpeg" 
-        alt="Soft Glam Look"
-        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
-      />
+      <img src="https://raw.githubusercontent.com/Harippriyasiva/saritha-makeup-artist/main/saritha_makeupartistry/WhatsApp%20Image%202026-05-20%20at%2011.18.03%20PM%20(2).jpeg" alt="Glam Look" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+      <div class="gallery-placeholder" style="display:none">✨<br/>Glam Look</div>
+      <div class="gallery-overlay"><span class="gallery-label">Soft Glam</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="creative">
+      <img src="https://raw.githubusercontent.com/Harippriyasiva/saritha-makeup-artist/main/saritha_makeupartistry/WhatsApp%20Image%202026-05-20%20at%2011.18.03%20PM.jpeg" alt="Creative Look" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+      <div class="gallery-placeholder" style="display:none">💎<br/>Creative Look</div>
+      <div class="gallery-overlay"><span class="gallery-label">Creative Look</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="bridal">
+      <img src="https://raw.githubusercontent.com/Harippriyasiva/saritha-makeup-artist/main/saritha_makeupartistry/IMG_3298.PNG" alt="Bridal Look" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+      <div class="gallery-placeholder" style="display:none">👑<br/>Bridal Look</div>
+      <div class="gallery-overlay"><span class="gallery-label">Muhurtham Bridal</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="glam">
+      <img src="https://raw.githubusercontent.com/Harippriyasiva/saritha-makeup-artist/main/saritha_makeupartistry/IMG_3302.PNG" alt="Soft Glam" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
       <div class="gallery-placeholder" style="display:none">🌟<br/>Soft Glam</div>
       <div class="gallery-overlay"><span class="gallery-label">Soft Glam</span></div>
     </div>
 
     <div class="gallery-item" data-cat="creative">
-      <img 
-        src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/IMG_0883.JPG.jpeg" 
-        alt="Bridal Look"
-        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
-      />
-      <div class="gallery-placeholder" style="display:none">🎀<br/>Bridal Look</div>
-      <div class="gallery-overlay"><span class="gallery-label">Bridal Look</span></div>
+      <img src="https://raw.githubusercontent.com/Harippriyasiva/saritha-makeup-artist/main/saritha_makeupartistry/IMG_3305.PNG" alt="Creative Look" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+      <div class="gallery-placeholder" style="display:none">💫<br/>Creative Look</div>
+      <div class="gallery-overlay"><span class="gallery-label">Creative Look</span></div>
     </div>
 
     <div class="gallery-item" data-cat="bridal">
-      <img 
-        src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/IMG_1615.JPG.jpeg" 
-        alt="Bridal Look"
-        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
-      />
+      <img src="https://raw.githubusercontent.com/Harippriyasiva/saritha-makeup-artist/main/saritha_makeupartistry/IMG_3304.PNG" alt="Bridal Look" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
       <div class="gallery-placeholder" style="display:none">🌸<br/>Bridal Look</div>
-      <div class="gallery-overlay"><span class="gallery-label">Bridal Look</span></div>
+      <div class="gallery-overlay"><span class="gallery-label">Muhurtham Bridal</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="glam">
+      <img src="https://raw.githubusercontent.com/Harippriyasiva/saritha-makeup-artist/main/saritha_makeupartistry/IMG_3307.PNG" alt="Glam Look" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+      <div class="gallery-placeholder" style="display:none">✨<br/>Glam Look</div>
+      <div class="gallery-overlay"><span class="gallery-label">Soft Glam</span></div>
     </div>
 
   </div>
-</section>
 
-<!-- ── REELS ── -->
+  <!-- Instagram CTA below gallery -->
+  <div style="text-align:center; margin-top:2.5rem;">
+    <a href="https://www.instagram.com/glam_by_saritha/" target="_blank" style="display:inline-flex; align-items:center; justify-content:center; gap:0.6rem; padding:0.85rem 2rem; border:1.5px solid var(--rose-deep); color:var(--rose-deep); font-size:0.75rem; letter-spacing:0.14em; text-transform:uppercase; border-radius:50px; text-decoration:none; transition:all 0.3s; font-family:'DM Sans',sans-serif; font-weight:500; max-width:100%; box-sizing:border-box;" onmouseover="this.style.background='var(--rose-deep)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='var(--rose-deep)'">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+      See More on Instagram @glam_by_saritha
+    </a>
+  </div>
+</section>
 <section id="reels">
   <div class="reels-header">
     <div>
@@ -744,15 +830,14 @@
       <!-- Reel 1 -->
       <div class="reel-card">
         <a class="reel-thumb-link" href="https://www.instagram.com/p/DYPSQ3mPve2/" target="_blank" rel="noopener noreferrer">
-          <div class="reel-ig-thumb">
-            <svg class="reel-ig-logo" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
-            <span style="color:rgba(255,255,255,0.8); font-size:0.72rem; letter-spacing:0.1em;">Watch on Instagram</span>
-            <span class="reel-ig-handle">@glam_by_saritha</span>
-          </div>
+          <img class="reel-preview-img" src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/MAD01065.jpg" alt="Bridal Transformation" onerror="this.style.display='none'"/>
           <div class="reel-play-overlay">
             <div class="play-btn">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
             </div>
+            <span style="position:absolute;top:0.8rem;right:0.8rem;background:rgba(0,0,0,0.5);border-radius:50%;padding:0.3rem;display:flex;align-items:center;justify-content:center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="white" stroke="none"/></svg>
+            </span>
           </div>
           <div class="reel-label">Bridal Transformation</div>
         </a>
@@ -761,15 +846,14 @@
       <!-- Reel 2 -->
       <div class="reel-card">
         <a class="reel-thumb-link" href="https://www.instagram.com/p/DXomTv6j0DG/" target="_blank" rel="noopener noreferrer">
-          <div class="reel-ig-thumb">
-            <svg class="reel-ig-logo" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
-            <span style="color:rgba(255,255,255,0.8); font-size:0.72rem; letter-spacing:0.1em;">Watch on Instagram</span>
-            <span class="reel-ig-handle">@glam_by_saritha</span>
-          </div>
+          <img class="reel-preview-img" src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/MAD01078.jpg" alt="Glam Look" onerror="this.style.display='none'"/>
           <div class="reel-play-overlay">
             <div class="play-btn">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
             </div>
+            <span style="position:absolute;top:0.8rem;right:0.8rem;background:rgba(0,0,0,0.5);border-radius:50%;padding:0.3rem;display:flex;align-items:center;justify-content:center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="white" stroke="none"/></svg>
+            </span>
           </div>
           <div class="reel-label">Glam Look</div>
         </a>
@@ -778,15 +862,14 @@
       <!-- Reel 3 -->
       <div class="reel-card">
         <a class="reel-thumb-link" href="https://www.instagram.com/p/DXbzUzWD67x/" target="_blank" rel="noopener noreferrer">
-          <div class="reel-ig-thumb">
-            <svg class="reel-ig-logo" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
-            <span style="color:rgba(255,255,255,0.8); font-size:0.72rem; letter-spacing:0.1em;">Watch on Instagram</span>
-            <span class="reel-ig-handle">@glam_by_saritha</span>
-          </div>
+          <img class="reel-preview-img" src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/MAD01128.jpg" alt="Soft Girl Look" onerror="this.style.display='none'"/>
           <div class="reel-play-overlay">
             <div class="play-btn">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
             </div>
+            <span style="position:absolute;top:0.8rem;right:0.8rem;background:rgba(0,0,0,0.5);border-radius:50%;padding:0.3rem;display:flex;align-items:center;justify-content:center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="white" stroke="none"/></svg>
+            </span>
           </div>
           <div class="reel-label">Soft Girl Look</div>
         </a>
@@ -795,15 +878,14 @@
       <!-- Reel 4 -->
       <div class="reel-card">
         <a class="reel-thumb-link" href="https://www.instagram.com/p/DYChbgDvn_V/" target="_blank" rel="noopener noreferrer">
-          <div class="reel-ig-thumb">
-            <svg class="reel-ig-logo" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
-            <span style="color:rgba(255,255,255,0.8); font-size:0.72rem; letter-spacing:0.1em;">Watch on Instagram</span>
-            <span class="reel-ig-handle">@glam_by_saritha</span>
-          </div>
+          <img class="reel-preview-img" src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/MAD01164.jpg" alt="Engagement Look" onerror="this.style.display='none'"/>
           <div class="reel-play-overlay">
             <div class="play-btn">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
             </div>
+            <span style="position:absolute;top:0.8rem;right:0.8rem;background:rgba(0,0,0,0.5);border-radius:50%;padding:0.3rem;display:flex;align-items:center;justify-content:center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="white" stroke="none"/></svg>
+            </span>
           </div>
           <div class="reel-label">Engagement Look</div>
         </a>
@@ -812,15 +894,14 @@
       <!-- Reel 5 -->
       <div class="reel-card">
         <a class="reel-thumb-link" href="https://www.instagram.com/p/DX4NQgyvsT4/" target="_blank" rel="noopener noreferrer">
-          <div class="reel-ig-thumb">
-            <svg class="reel-ig-logo" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
-            <span style="color:rgba(255,255,255,0.8); font-size:0.72rem; letter-spacing:0.1em;">Watch on Instagram</span>
-            <span class="reel-ig-handle">@glam_by_saritha</span>
-          </div>
+          <img class="reel-preview-img" src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/WhatsApp%20Image%202026-05-13%20at%207.26.08%20PM%20(1).jpeg" alt="Muhurtham Bridal" onerror="this.style.display='none'"/>
           <div class="reel-play-overlay">
             <div class="play-btn">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
             </div>
+            <span style="position:absolute;top:0.8rem;right:0.8rem;background:rgba(0,0,0,0.5);border-radius:50%;padding:0.3rem;display:flex;align-items:center;justify-content:center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="white" stroke="none"/></svg>
+            </span>
           </div>
           <div class="reel-label">Muhurtham Bridal</div>
         </a>
@@ -829,15 +910,14 @@
       <!-- Reel 6 -->
       <div class="reel-card">
         <a class="reel-thumb-link" href="https://www.instagram.com/p/DXty8PovIDz/" target="_blank" rel="noopener noreferrer">
-          <div class="reel-ig-thumb">
-            <svg class="reel-ig-logo" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
-            <span style="color:rgba(255,255,255,0.8); font-size:0.72rem; letter-spacing:0.1em;">Watch on Instagram</span>
-            <span class="reel-ig-handle">@glam_by_saritha</span>
-          </div>
+          <img class="reel-preview-img" src="https://raw.githubusercontent.com/Harippriyasiva/websites/main/saritha_makeupartistry/WhatsApp%20Image%202026-05-13%20at%207.26.08%20PM.jpeg" alt="Creative Look" onerror="this.style.display='none'"/>
           <div class="reel-play-overlay">
             <div class="play-btn">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
             </div>
+            <span style="position:absolute;top:0.8rem;right:0.8rem;background:rgba(0,0,0,0.5);border-radius:50%;padding:0.3rem;display:flex;align-items:center;justify-content:center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="white" stroke="none"/></svg>
+            </span>
           </div>
           <div class="reel-label">Creative Look</div>
         </a>
@@ -909,121 +989,7 @@
     <button class="testi-dot" onclick="goTesti(2)"></button>
   </div>
 
-  <!-- WhatsApp Screenshot Reviews -->
-  <div class="wa-reviews-section fade-up">
-    <p class="wa-reviews-title">Direct from Clients · WhatsApp Reviews</p>
-    <div class="wa-screenshots-grid">
 
-      <!-- Review 1 – Prerana -->
-      <div class="wa-phone-mockup">
-        <div class="wa-phone-header">
-          <div class="wa-phone-avatar">P</div>
-          <div class="wa-phone-contact">
-            <div class="wa-phone-name">Prerana</div>
-            <div class="wa-phone-status">@mpprerna</div>
-          </div>
-          <div class="wa-phone-icons">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.05 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.12.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0122 14.92z"/></svg>
-          </div>
-        </div>
-        <div class="wa-chat-body">
-          <div class="wa-bubble sent">
-            I really value your feedback. Could you share a short review of your experience?
-            <div class="wa-time">7:24 PM</div>
-          </div>
-          <div class="wa-bubble received">
-            Thank you ❤️❤️
-            <div class="wa-time">7:25 PM</div>
-          </div>
-          <div class="wa-bubble received">
-            I loveddd how focused you were and the attention that you gave to my features. Your technique is unbeatable. I felt like a real life Barbie! 🎀
-            <div class="wa-time">7:25 PM</div>
-          </div>
-          <div class="wa-bubble received">
-            Definitely booking for future events!
-            <div class="wa-time">7:26 PM</div>
-          </div>
-        </div>
-        <div class="wa-source-badge">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          <span>Party Makeup · Verified Client</span>
-        </div>
-      </div>
-
-      <!-- Review 2 – Bhairavi -->
-      <div class="wa-phone-mockup">
-        <div class="wa-phone-header">
-          <div class="wa-phone-avatar">B</div>
-          <div class="wa-phone-contact">
-            <div class="wa-phone-name">Bhairavi</div>
-            <div class="wa-phone-status">@bhxiravi</div>
-          </div>
-          <div class="wa-phone-icons">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.05 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.12.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0122 14.92z"/></svg>
-          </div>
-        </div>
-        <div class="wa-chat-body">
-          <div class="wa-bubble sent">
-            Thank you so much for today akka! ❤️❤️❤️❤️
-            <div class="wa-time">7:24 PM</div>
-          </div>
-          <div class="wa-bubble sent">
-            I really value your feedback. Could you share a short review? Also is it okay if I use your images on my website?
-            <div class="wa-time">7:24 PM</div>
-          </div>
-          <div class="wa-bubble received">
-            sure thing! ❤️
-            <div class="wa-time">7:25 PM</div>
-          </div>
-          <div class="wa-bubble received">
-            i absolutely loved your work. I felt like a doll. Your openness to constructive criticism is so refreshing — 10/10! 🌟
-            <div class="wa-time">7:26 PM</div>
-          </div>
-        </div>
-        <div class="wa-source-badge">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          <span>Occasion Makeup · Verified Client</span>
-        </div>
-      </div>
-
-      <!-- Review 3 – Deepika -->
-      <div class="wa-phone-mockup">
-        <div class="wa-phone-header">
-          <div class="wa-phone-avatar">D</div>
-          <div class="wa-phone-contact">
-            <div class="wa-phone-name">Deepika S.</div>
-            <div class="wa-phone-status">Muhurtham Bride · Madurai</div>
-          </div>
-          <div class="wa-phone-icons">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.05 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.12.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0122 14.92z"/></svg>
-          </div>
-        </div>
-        <div class="wa-chat-body">
-          <div class="wa-bubble sent">
-            Could you share a quick review? Would love to feature you on my website 🌸
-            <div class="wa-time">9:12 AM</div>
-          </div>
-          <div class="wa-bubble received">
-            Of course akka! 🌸
-            <div class="wa-time">9:15 AM</div>
-          </div>
-          <div class="wa-bubble received">
-            Saritha transformed me for my muhurtham. The makeup lasted all day through tears, sweat, and everything! Every relative complimented my look. She is an absolute gem 💎
-            <div class="wa-time">9:16 AM</div>
-          </div>
-          <div class="wa-bubble received">
-            Will definitely recommend to all my friends! ❤️
-            <div class="wa-time">9:17 AM</div>
-          </div>
-        </div>
-        <div class="wa-source-badge">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          <span>Muhurtham Bridal · Verified Client</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
 </section>
 
 <!-- ── BOOKING ── -->
@@ -1076,9 +1042,9 @@
         <label>Service Needed *</label>
         <select id="fservice">
           <option value="">Select a service...</option>
-          <option value="Muhurtham Bridal – Basic HD (₹15,000)">Muhurtham Bridal – Basic HD (₹15,000)</option>
-          <option value="Muhurtham Bridal – Luxury HD (₹20,000)">Muhurtham Bridal – Luxury HD (₹20,000)</option>
-          <option value="Muhurtham Bridal – Luxury Airbrush (₹25,000)">Muhurtham Bridal – Luxury Airbrush (₹25,000)</option>
+          <option value="Muhurtham Bridal – Basic HD">Muhurtham Bridal – Basic HD</option>
+          <option value="Muhurtham Bridal – Luxury HD">Muhurtham Bridal – Luxury HD</option>
+          <option value="Muhurtham Bridal – Luxury Airbrush">Muhurtham Bridal – Luxury Airbrush</option>
           <option value="Combo: Muhurtham + Reception + Engagement (10% Off)">Combo: Muhurtham + Reception + Engagement (10% Off)</option>
           <option value="Party Makeup">Party Makeup</option>
           <option value="Groom Makeup">Groom Makeup</option>
@@ -1224,6 +1190,28 @@ function showToast(msg) {
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 3500);
 }
+</script>
+<!-- ── LIGHTBOX ── -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightboxImg" src="" alt=""/>
+</div>
+
+<script>
+// ── LIGHTBOX ──
+document.querySelectorAll('.gallery-item img').forEach(img => {
+  img.addEventListener('click', e => {
+    e.stopPropagation();
+    document.getElementById('lightboxImg').src = img.src;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+});
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
 </script>
 </body>
 </html>
