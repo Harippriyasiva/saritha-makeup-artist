@@ -30,8 +30,8 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; font-size: 16px; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--ivory); color: var(--charcoal); overflow-x: hidden; }
+  html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--ivory); color: var(--charcoal); overflow-x: hidden; max-width: 100vw; }
 
   body::before {
     content: '';
@@ -132,7 +132,7 @@
   .pkg-card { border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2.5rem 2rem; position: relative; overflow: hidden; transition: transform 0.3s, border-color 0.3s; background: rgba(255,255,255,0.03); display: flex; flex-direction: column; }
   .pkg-card:hover { transform: translateY(-6px); border-color: rgba(232,160,160,0.4); }
   .pkg-card.featured { border-color: var(--blush); background: linear-gradient(160deg, rgba(232,160,160,0.1) 0%, rgba(192,86,106,0.05) 100%); }
-  .pkg-badge { display: inline-block; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 50px; border: 1px solid var(--blush); color: var(--blush-light); margin-bottom: 1.5rem; }
+  .pkg-badge { display: inline-block; align-self: flex-start; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 50px; border: 1px solid var(--blush); color: var(--blush-light); margin-bottom: 1.5rem; max-width: fit-content; }
   .pkg-badge.pop { background: linear-gradient(135deg, var(--rose-deep), var(--mauve)); color: #fff; border-color: transparent; }
   .pkg-icon { font-size: 2rem; margin-bottom: 0.8rem; display: block; }
   .pkg-name { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 400; color: #fff; margin-bottom: 0.3rem; }
@@ -203,8 +203,8 @@
   /* ── REELS ── */
   #reels { padding: 7rem 5rem; background: var(--ivory); overflow: hidden; }
   .reels-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem; }
-  .reels-track-wrap { overflow: hidden; position: relative; }
-  .reels-track { display: flex; gap: 1.2rem; transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); }
+  .reels-track-wrap { overflow: hidden; position: relative; max-width: 100%; }
+  .reels-track { display: flex; gap: 1.2rem; transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); will-change: transform; }
   .reel-card { flex: 0 0 calc(25% - 0.9rem); border-radius: 20px; overflow: hidden; position: relative; aspect-ratio: 9/16; background: var(--warm-dark); cursor: pointer; }
   .reel-thumb-link { display: block; width: 100%; height: 100%; position: relative; text-decoration: none; }
 
@@ -228,7 +228,7 @@
   #testimonials .section-label { color: var(--blush-light); }
   #testimonials .section-label::before { background: var(--blush-light); }
   #testimonials .section-title { color: #fff; }
-  .testi-track-wrap { overflow: hidden; margin-top: 3.5rem; }
+  .testi-track-wrap { overflow: hidden; margin-top: 3.5rem; max-width: 100%; }
   .testi-track { display: flex; gap: 1.5rem; transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); }
   .testi-card { flex: 0 0 calc(33.33% - 1rem); background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 2.2rem; position: relative; transition: border-color 0.3s; }
   .testi-card:hover { border-color: rgba(232,160,160,0.3); }
@@ -297,7 +297,7 @@
   .form-divider::before, .form-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
   /* ── FOOTER ── */
-  footer { background: var(--charcoal); padding: 3rem 5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  footer { background: var(--charcoal); padding: 3rem 5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; width: 100%; }
   .footer-brand { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: rgba(255,255,255,0.7); font-weight: 400; }
   .footer-brand span { color: var(--blush-light); font-style: italic; }
   .footer-copy { font-size: 0.72rem; color: rgba(255,255,255,0.25); letter-spacing: 0.08em; }
@@ -338,9 +338,10 @@
 
   @media (max-width: 1024px) {
     #hero { grid-template-columns: 1fr; }
-    .hero-left { padding: 7rem 2.5rem 3rem; min-height: 70svh; }
+    .hero-left { padding: 7rem 2.5rem 3rem; min-height: unset; }
     .hero-right { height: 60svh; }
-    .hero-stat-strip { padding: 1rem 2.5rem; gap: 1.5rem; flex-wrap: wrap; }
+    /* Fix stat strip: make it flow below image, not overlay it */
+    .hero-stat-strip { position: relative; bottom: auto; left: auto; right: auto; padding: 1rem 2.5rem; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
     #combo { padding: 2rem 2.5rem; }
     #packages { padding: 5rem 2.5rem; }
     .pkg-grid { grid-template-columns: 1fr 1fr; }
@@ -361,92 +362,114 @@
   }
 
   @media (max-width: 640px) {
+    /* Global safety */
+    section, footer, nav { width: 100%; max-width: 100vw; }
+
+    /* Nav */
+    nav { padding: 1rem 1.2rem; }
+
     /* Sections padding */
-    #combo { padding: 1.8rem 1.5rem; }
-    #packages { padding: 4rem 1.5rem; }
-    #services { padding: 4rem 1.5rem; }
-    #about { padding: 4rem 1.5rem; gap: 2.5rem; }
-    #lookbook { padding: 4rem 1.5rem; }
-    #reels { padding: 4rem 1.5rem; }
-    #testimonials { padding: 4rem 1.5rem; }
-    #booking { padding: 4rem 1.5rem; }
+    #combo { padding: 1.8rem 1.2rem; }
+    #packages { padding: 4rem 1.2rem; }
+    #services { padding: 4rem 1.2rem; }
+    #about { padding: 4rem 1.2rem; gap: 2.5rem; }
+    #lookbook { padding: 4rem 1.2rem; }
+    #reels { padding: 4rem 1.2rem; }
+    #testimonials { padding: 4rem 1.2rem; }
+    #booking { padding: 4rem 1.2rem; }
 
     /* Hero */
-    .hero-left { padding: 5.5rem 1.5rem 2rem; min-height: unset; }
-    .hero-right { height: 52svh; }
-    .hero-h1 { font-size: clamp(2.2rem, 9vw, 3rem); }
-    .hero-sub { font-size: 0.9rem; margin-bottom: 1.2rem; }
-    .hero-skin-tags { gap: 0.4rem !important; margin-bottom: 1.4rem !important; margin-top: -0.8rem !important; }
-    .hero-skin-tags span { font-size: 0.6rem !important; padding: 0.3rem 0.7rem !important; letter-spacing: 0.1em !important; }
-    .hero-actions { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+    .hero-left { padding: 5.5rem 1.2rem 2rem; min-height: unset; }
+    .hero-right { height: 50svh; }
+    .hero-h1 { font-size: clamp(2rem, 8vw, 2.8rem); }
+    .hero-sub { font-size: 0.88rem; margin-bottom: 1rem; max-width: 100%; }
+    .hero-skin-tags { gap: 0.4rem !important; margin-bottom: 1.2rem !important; margin-top: -0.6rem !important; }
+    .hero-skin-tags span { font-size: 0.58rem !important; padding: 0.28rem 0.65rem !important; letter-spacing: 0.08em !important; }
+    .hero-actions { flex-direction: column; align-items: stretch; gap: 0.8rem; }
     .btn-primary { width: 100%; justify-content: center; }
+    .btn-secondary { align-self: center; }
 
-    /* Stat strip — sit below image on mobile */
-    .hero-stat-strip { position: relative; bottom: auto; left: auto; right: auto; gap: 0.8rem; padding: 0.8rem 1.5rem; justify-content: space-around; }
+    /* Stat strip */
+    .hero-stat-strip { position: relative; bottom: auto; left: auto; right: auto; gap: 0; padding: 0.9rem 1rem; justify-content: space-around; }
     .stat-label { display: none; }
-    .stat-num { font-size: 1.3rem; }
+    .stat-num { font-size: 1.25rem; }
     .stat-divider { display: none; }
 
     /* Combo */
-    .combo-inner { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
-    .combo-text h3 { font-size: 1.3rem; }
+    .combo-inner { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .combo-text h3 { font-size: 1.2rem; line-height: 1.3; }
     .btn-combo { width: 100%; justify-content: center; }
 
     /* Packages */
     .pkg-grid { grid-template-columns: 1fr; }
     #packages::before { display: none; }
-    .pkg-price { font-size: 0.88rem !important; line-height: 1.5; }
-    .pkg-card { padding: 2rem 1.5rem; }
+    .pkg-price { font-size: 0.85rem !important; line-height: 1.5; }
+    .pkg-card { padding: 1.8rem 1.2rem; }
+    .pkg-badge { font-size: 0.58rem; padding: 0.25rem 0.7rem; }
+    .pkg-badge.pop { font-size: 0.58rem; }
+    .pkg-name { font-size: 1.4rem; }
 
     /* Services */
     .services-grid { grid-template-columns: 1fr; }
-    .travel-note { flex-direction: column; gap: 0.8rem; padding: 1.2rem 1.5rem; }
+    .travel-note { flex-direction: column; gap: 0.8rem; padding: 1.2rem; }
 
     /* About */
     .skills-grid { grid-template-columns: 1fr; }
-    .about-accent-card { right: 0.5rem; bottom: -0.5rem; width: 130px; padding: 1rem; }
-    .about-accent-card .num { font-size: 2rem; }
-    .about-bio { font-size: 0.93rem; }
+    .about-accent-card { right: 0.5rem; bottom: -0.5rem; width: 120px; padding: 0.9rem; }
+    .about-accent-card .num { font-size: 1.8rem; }
+    .about-bio { font-size: 0.9rem; }
 
     /* Lookbook */
-    .lookbook-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
-    .filter-tabs { gap: 0.35rem; }
-    .filter-tab { padding: 0.4rem 0.85rem; font-size: 0.63rem; }
-    .gallery-grid { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+    .lookbook-header { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+    .filter-tabs { gap: 0.3rem; flex-wrap: wrap; }
+    .filter-tab { padding: 0.35rem 0.8rem; font-size: 0.6rem; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
     .gallery-item.tall { grid-row: span 1; aspect-ratio: 3/4; }
+    .gallery-label { font-size: 0.6rem; padding: 0.25rem 0.6rem; }
 
     /* Reels */
-    .reel-card { flex: 0 0 82%; }
-    .reels-header { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+    .reel-card { flex: 0 0 80%; }
+    .reels-header { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
 
     /* Testimonials */
-    .testi-card { flex: 0 0 92%; }
-    .testi-quote { font-size: 1rem; }
+    .testi-card { flex: 0 0 88%; }
+    .testi-quote { font-size: 0.95rem; }
 
     /* Booking */
     .form-row { grid-template-columns: 1fr; }
-    .booking-form-card { padding: 1.5rem 1.2rem; }
-    .form-title { font-size: 1.35rem; }
-    .booking-desc { font-size: 0.9rem; }
+    .booking-form-card { padding: 1.4rem 1.1rem; }
+    .form-title { font-size: 1.3rem; }
+    .booking-desc { font-size: 0.88rem; }
+    .form-group input, .form-group select, .form-group textarea { font-size: 0.95rem; padding: 0.85rem 1rem; min-height: 48px; }
+    .form-group select { min-height: 48px; }
+    .btn-form-submit, .btn-whatsapp, .btn-instagram { font-size: 0.75rem; padding: 0.95rem; min-height: 50px; }
 
     /* Footer */
-    footer { flex-direction: column; align-items: center; text-align: center; gap: 1rem; padding: 2rem 1.5rem; }
+    footer { flex-direction: column; align-items: center; text-align: center; gap: 1rem; padding: 2rem 1.5rem; width: 100%; }
+    .footer-copy { font-size: 0.68rem; word-break: break-word; }
+
+    /* Designer credit */
+    .designer-credit { padding: 1rem 1.2rem !important; }
+    .designer-credit p { font-size: 0.65rem !important; letter-spacing: 0.05em !important; word-break: break-word; }
 
     /* Toast */
-    .toast { white-space: normal; text-align: center; max-width: 88vw; font-size: 0.75rem; }
+    .toast { white-space: normal; text-align: center; max-width: 86vw; font-size: 0.73rem; }
 
     /* Section titles */
-    .section-title { font-size: clamp(1.7rem, 7vw, 2.6rem); }
+    .section-title { font-size: clamp(1.6rem, 6.5vw, 2.4rem); }
+    .section-label { font-size: 0.62rem; }
   }
 
-  /* Very small phones (iPhone SE etc.) */
+  /* Very small phones (≤390px) */
   @media (max-width: 390px) {
-    .nav-logo { font-size: 1.15rem; }
-    .hero-h1 { font-size: 2rem; }
-    .hero-skin-tags span { font-size: 0.55rem !important; padding: 0.28rem 0.6rem !important; }
-    .stat-num { font-size: 1.15rem; }
+    nav { padding: 0.9rem 1rem; }
+    .nav-logo { font-size: 1.1rem; }
+    .hero-h1 { font-size: 1.9rem; }
+    .hero-skin-tags span { font-size: 0.52rem !important; padding: 0.24rem 0.55rem !important; }
+    .stat-num { font-size: 1.1rem; }
     .gallery-grid { grid-template-columns: 1fr 1fr; gap: 0.4rem; }
-    .pkg-card { padding: 1.6rem 1.2rem; }
+    .pkg-card { padding: 1.5rem 1rem; }
+    .combo-text h3 { font-size: 1.1rem; }
   }
 </style>
 </head>
@@ -1054,10 +1077,10 @@
 </footer>
 
 <!-- ── DESIGNER CREDIT ── -->
-<div style="background:#111; padding:1rem 2rem; text-align:center; border-top:1px solid rgba(255,255,255,0.05);">
-  <p style="font-size:0.7rem; color:rgba(255,255,255,0.3); letter-spacing:0.1em; font-family:'DM Sans',sans-serif; line-height:1.8;">
-    Website crafted by <a href="mailto:harippriyasiva@gmail.com" style="color:rgba(232,160,160,0.6); text-decoration:none; transition:color 0.2s;" onmouseover="this.style.color='#E8A0A0'" onmouseout="this.style.color='rgba(232,160,160,0.6)'">harippriyasiva@gmail.com</a>
-    &nbsp;·&nbsp; Want a stunning website for your business? <a href="mailto:harippriyasiva@gmail.com" style="color:rgba(232,160,160,0.6); text-decoration:none;" onmouseover="this.style.color='#E8A0A0'" onmouseout="this.style.color='rgba(232,160,160,0.6)'"">Let's connect →</a>
+<div class="designer-credit" style="background:#111; padding:1rem 2rem; text-align:center; border-top:1px solid rgba(255,255,255,0.05); width:100%;">
+  <p style="font-size:0.7rem; color:rgba(255,255,255,0.3); letter-spacing:0.1em; font-family:'DM Sans',sans-serif; line-height:1.8; word-break:break-word;">
+    Website crafted by <a href="mailto:harippriyasiva@gmail.com" style="color:rgba(232,160,160,0.6); text-decoration:none;" onmouseover="this.style.color='#E8A0A0'" onmouseout="this.style.color='rgba(232,160,160,0.6)'">harippriyasiva@gmail.com</a>
+    &nbsp;·&nbsp; Want a stunning website? <a href="mailto:harippriyasiva@gmail.com" style="color:rgba(232,160,160,0.6); text-decoration:none;" onmouseover="this.style.color='#E8A0A0'" onmouseout="this.style.color='rgba(232,160,160,0.6)'">Let's connect →</a>
   </p>
 </div>
 
